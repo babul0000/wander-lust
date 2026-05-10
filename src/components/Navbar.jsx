@@ -3,6 +3,8 @@ import Link from 'next/link';
 import React from 'react';
 
 const Navbar = () => {
+    
+
     return (
 
         <div className=' shadow-md '>
@@ -13,13 +15,13 @@ const Navbar = () => {
                     <Link href='/'>Home</Link>
                 </li>
                 <li>
-                    <Link href='/destinations'>Destinations</Link>
+                    <Link href='/destination'>Destinations</Link>
                 </li>
                 <li>
                     <Link href='/myBookings'>My Bookings</Link>
                 </li>
                 <li>
-                    <Link href='/admin'>Admin</Link>
+                    <Link href='/app-destinations'>Add-Destinations</Link>
                 </li>
             </ul>
             <div>
