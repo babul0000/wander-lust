@@ -1,0 +1,90 @@
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { HiOutlineLocationMarker, HiOutlineCalendar, HiOutlineStar } from 'react-icons/hi';
+
+const DetailsPage = async ({ params }) => {
+    const { id } = await params
+
+    const res = await fetch(`http://localhost:5000/destination/${id}`)
+    const data = await res.json();
+    const destination = data;
+
+
+    return (
+        <div className="max-w-5xl mx-auto px-4 py-4">
+            {/* Back Button */}
+            <Link href={'/destination'}>
+            <button className="text-gray-500 hover:text-gray-800 text-sm flex items-center gap-2 mb-4">
+                ← Back to Destinations
+            </button></Link>
+
+            {/* Main Layout Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+                {/* Left Side: Image & Content */}
+                <div className="lg:col-span-2">
+                    {/* Image - হাইট আরও কমিয়ে ২৫০পিএক্স করা হয়েছে যাতে কন্টেন্ট উপরে থাকে */}
+                    <div className="relative w-full h-[250px] rounded-2xl overflow-hidden mb-6 shadow-sm">
+                        <Image
+                            src={destination?.imageUrl}
+                            alt={destination?.destinationName}
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                    </div>
+
+                    {/* Title & Info */}
+                    <div className="mb-6">
+                        <div className="flex items-center gap-2 text-[#15A1BF] font-medium text-sm mb-1">
+                            <HiOutlineLocationMarker />
+                            <span>{destination?.country}</span>
+                        </div>
+                        <h1 className="text-3xl font-bold text-gray-900 mb-3">
+                            {destination?.destinationName} Paradise
+                        </h1>
+
+                        <div className="flex items-center gap-6 text-sm text-gray-600">
+                            <div className="flex items-center gap-1">
+                                <HiOutlineStar className="text-yellow-500" />
+                                <span className="font-bold text-gray-900">4.9</span>
+                                <span className="text-gray-400">(234 reviews)</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <HiOutlineCalendar />
+                                <span>{destination?.duration} Days / {parseInt(destination?.duration) + 1} Nights</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Overview */}
+                    <div className="mb-6">
+                        <h2 className="text-xl font-bold text-gray-900 mb-2">Overview</h2>
+                        <p className="text-gray-600 leading-relaxed text-base">
+                            {destination?.description || "Experience the magic of this destination with pristine beaches and vibrant culture."}
+                        </p>
+                    </div>
+
+                    {/* Highlights */}
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-900 mb-3">Highlights</h2>
+                        <div className="grid grid-cols-2 gap-3">
+                            {["Luxury Stays", "Spa Treatment", "Sunrise Trek", "Private Dinner"].map((h, i) => (
+                                <div key={i} className="flex items-center gap-2 text-gray-600 text-sm">
+                                    <span className="w-2 h-2 bg-[#15A1BF] rounded-full"></span>
+                                    {h}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Side - Empty for now */}
+                <div className="hidden lg:block"></div>
+            </div>
+        </div>
+    );
+};
+
+export default DetailsPage;

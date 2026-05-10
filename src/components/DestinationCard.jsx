@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { HiOutlineLocationMarker, HiOutlineCalendar } from 'react-icons/hi'; // react-icons ব্যবহার করলে
 import { FiArrowUpRight } from 'react-icons/fi';
+import Link from 'next/link';
 
 const DestinationCard = ({ destination }) => {
     return (
@@ -47,9 +48,11 @@ const DestinationCard = ({ destination }) => {
 
                 {/* Action Link */}
                 <div className="pt-2">
+                    <Link href={`/destination/${destination._id}`}>
                     <button className="flex items-center gap-1 text-[#15A1BF] font-bold text-sm uppercase tracking-wider hover:underline">
                         Book Now <FiArrowUpRight />
                     </button>
+                    </Link>
                 </div>
             </div>
         </div>
