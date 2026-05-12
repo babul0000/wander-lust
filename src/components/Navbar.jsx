@@ -18,6 +18,8 @@ const Navbar = () => {
         await authClient.signOut();
     }
 
+    
+
 
     return (
 
@@ -57,7 +59,7 @@ const Navbar = () => {
                             <div className='flex justify-center items-center gap-2'>
                                 <li>
                                 <Avatar>
-                                    <Avatar.Image alt="John Doe" src={item?.image} />
+                                    <Avatar.Image referrerPolicy='no-referrer' alt="John Doe" src={item?.image} />
                                     <Avatar.Fallback>JD</Avatar.Fallback>
                                 </Avatar>
                             </li>
