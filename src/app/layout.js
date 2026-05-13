@@ -2,6 +2,7 @@ import { Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Toaster } from "react-hot-toast";
 
 const Josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
       className={`${Josefin.className} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <Toaster position="top-center" reverseOrder={false} /> 
         <Navbar/>
         <main>
           {children}

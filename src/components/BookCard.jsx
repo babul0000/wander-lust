@@ -5,6 +5,7 @@ import { DateField, Label } from "@heroui/react";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 const BookCard = ({ destination }) => {
     // ১. সেশন ডাটা এবং লোডিং স্টেট নিয়ে আসা
@@ -26,6 +27,7 @@ const BookCard = ({ destination }) => {
             return;
         }
 
+
         const bookingData = {
             userId: item.id,
             userImage: item.image,
@@ -39,7 +41,7 @@ const BookCard = ({ destination }) => {
         };
 
         console.log("Booking Data Prepared:", bookingData);
-        // এখানে আপনার API কল বা পরবর্তী কাজগুলো করুন
+
         const res = await fetch('http://localhost:5000/booking', {
             method: 'POST',
             headers: {
@@ -48,11 +50,14 @@ const BookCard = ({ destination }) => {
             body: JSON.stringify(bookingData)
         })
         const data = await res.json()
-        console.log(data);
-        
+        // console.log(data);
+        if(data){
+            toast.success('successfully booking')
+        }
+
     };
 
-    // ৪. সেশন লোড হওয়ার সময় একটি লোডার দেখানো যাতে এরর না আসে
+
     if (isPending) {
         return (
             <div className="w-[320px] p-6 border border-gray-100 rounded-xl shadow-lg bg-white flex justify-center items-center">
@@ -72,9 +77,9 @@ const BookCard = ({ destination }) => {
             </div>
 
             <div className="mb-6">
-                <DateField 
-                    onChange={setDepartureData} 
-                    className="w-full" 
+                <DateField
+                    onChange={setDepartureData}
+                    className="w-full"
                     name="date"
                 >
                     <Label>Date</Label>
@@ -86,8 +91,8 @@ const BookCard = ({ destination }) => {
                 </DateField>
             </div>
 
-            <button 
-                onClick={handleBooking} 
+            <button
+                onClick={handleBooking}
                 className="w-full py-3.5 bg-[#17a2b8] hover:bg-[#138496] transition-all text-white font-semibold rounded-md flex justify-center items-center gap-2 mb-6"
             >
                 Book Now <HiOutlineArrowNarrowRight size={20} />

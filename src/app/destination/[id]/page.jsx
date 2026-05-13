@@ -12,7 +12,7 @@ const DetailsPage = async ({ params }) => {
     const res = await fetch(`http://localhost:5000/destination/${id}`)
     const data = await res.json();
     const destination = data;
-console.log(destination);
+// console.log(destination);
 
 
     return (
