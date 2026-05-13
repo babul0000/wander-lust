@@ -12,6 +12,7 @@ const DetailsPage = async ({ params }) => {
     const res = await fetch(`http://localhost:5000/destination/${id}`)
     const data = await res.json();
     const destination = data;
+console.log(destination);
 
 
     return (
@@ -107,7 +108,7 @@ const DetailsPage = async ({ params }) => {
 
             </div>
             <div className='mt-30 mr-50'>
-                <BookCard />
+                <BookCard destination={destination}></BookCard>
             </div>
         </div>
     );

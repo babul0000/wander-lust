@@ -1,46 +1,95 @@
 "use client";
 
 import React, { useState } from "react";
-
 import { DateField, Label } from "@heroui/react";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { authClient } from "@/lib/auth-client";
 
-const BookCard = () => {
-    const {
-            data: session,
-        } = authClient.useSession()
-    
-        const item = session?.user;
-        console.log(item);
+const BookCard = ({ destination }) => {
+    // ১. সেশন ডাটা এবং লোডিং স্টেট নিয়ে আসা
+    const { data: session, isPending } = authClient.useSession();
+    const item = session?.user;
 
-    const [depurturedata, setDepurtureData] = useState(null)
-    console.log(new Date(depurturedata));
+    const [departureData, setDepartureData] = useState(null);
 
-    const handleBooking = async() => {
+    const handleBooking = async () => {
+        // ২. ইউজার লগইন চেক (সবচেয়ে গুরুত্বপূর্ণ)
+        if (!item) {
+            alert("বুকিং করার জন্য দয়া করে লগইন করুন।");
+            return;
+        }
+
+        // ৩. তারিখ চেক
+        if (!departureData) {
+            alert("দয়া করে যাত্রার তারিখ নির্বাচন করুন।");
+            return;
+        }
+
+        const bookingData = {
+            userId: item.id,
+            userImage: item.image,
+            userName: item.name,
+            destinationId: destination?._id,
+            destinationName: destination?.destinationName,
+            destinationPrice: destination?.price,
+            destinationUrl: destination?.imageUrl,
+            destinationCountry: destination?.country,
+            departureDate: new Date(departureData),
+        };
+
+        console.log("Booking Data Prepared:", bookingData);
+        // এখানে আপনার API কল বা পরবর্তী কাজগুলো করুন
+        const res = await fetch('http://localhost:5000/booking', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(bookingData)
+        })
+        const data = await res.json()
+        console.log(data);
         
+    };
+
+    // ৪. সেশন লোড হওয়ার সময় একটি লোডার দেখানো যাতে এরর না আসে
+    if (isPending) {
+        return (
+            <div className="w-[320px] p-6 border border-gray-100 rounded-xl shadow-lg bg-white flex justify-center items-center">
+                <p>চেক করা হচ্ছে...</p>
+            </div>
+        );
     }
-    
+
     return (
         <div className="w-[320px] p-6 border border-gray-100 rounded-xl shadow-lg bg-white font-sans text-gray-800">
-
             <div className="mb-6">
                 <p className="text-[14px] text-gray-500">Starting from</p>
-                <h1 className="text-4xl font-bold text-[#17a2b8] my-1">$1299</h1>
+                <h1 className="text-4xl font-bold text-[#17a2b8] my-1">
+                    ${destination?.price || "1299"}
+                </h1>
                 <p className="text-[14px] text-gray-500">per person</p>
             </div>
 
             <div className="mb-6">
-                <DateField onChange={setDepurtureData} className="w-[256px]" name="date">
+                <DateField 
+                    onChange={setDepartureData} 
+                    className="w-full" 
+                    name="date"
+                >
                     <Label>Date</Label>
                     <DateField.Group>
-                        <DateField.Input>{(segment) => <DateField.Segment segment={segment} />}</DateField.Input>
+                        <DateField.Input>
+                            {(segment) => <DateField.Segment segment={segment} />}
+                        </DateField.Input>
                     </DateField.Group>
                 </DateField>
             </div>
 
-            <button className="w-full py-3.5 bg-[#17a2b8] hover:bg-[#138496] transition-all text-white font-semibold rounded-md flex justify-center items-center gap-2 mb-6">
+            <button 
+                onClick={handleBooking} 
+                className="w-full py-3.5 bg-[#17a2b8] hover:bg-[#138496] transition-all text-white font-semibold rounded-md flex justify-center items-center gap-2 mb-6"
+            >
                 Book Now <HiOutlineArrowNarrowRight size={20} />
             </button>
 
