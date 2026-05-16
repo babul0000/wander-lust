@@ -21,14 +21,14 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${Josefin.className} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <Toaster position="top-center" reverseOrder={false} /> 
-        <Navbar/>
-        <main>
+      <body className="min-h-full flex flex-col bg-slate-50 text-gray-900">
+        <Toaster position="top-center" reverseOrder={false} />
+        <Navbar />
+        <main className="flex-1">
           {children}
         </main>
-        <Footer/>
-        </body>
+        <Footer />
+      </body>
     </html>
   );
 }
